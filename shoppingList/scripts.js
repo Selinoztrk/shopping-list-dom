@@ -1,4 +1,9 @@
 const shoppingList = document.querySelector(".shopping-list");
+const shoppingForm = document.querySelector(".shopping-form");
+
+loadItems();
+
+shoppingForm.addEventListener("submit", handleFormSubmit);
 
 function loadItems() {
     const items = [
@@ -14,6 +19,35 @@ function loadItems() {
         const li = createListItem(item);
         shoppingList.appendChild(li);
     }
+}
+
+function addItem(input) {
+    const newItem = createListItem({
+        id: generateId(),
+        name: input.value,
+        completed: false
+    });
+
+    shoppingList.appendChild(newItem);
+
+    input.value = "";
+}
+
+function generateId() {
+    return Date.now().toString();
+}
+
+function handleFormSubmit(e) {
+    e.preventDefault();
+    
+    const input = document.getElementById("item_name");
+
+    if(input.value.trim().length === 0) {
+        alert("enter a new value");
+        return;
+    }
+
+    addItem(input);
 }
 
 function createListItem(item) {
@@ -43,4 +77,3 @@ function createListItem(item) {
     return li;
 }
 
-loadItems();
