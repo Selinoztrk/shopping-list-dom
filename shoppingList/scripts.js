@@ -1,16 +1,40 @@
 const shoppingList = document.querySelector(".shopping-list");
 const shoppingForm = document.querySelector(".shopping-form");
 const filterButtons = document.querySelectorAll(".filter-buttons button");
+const clearBtn = document.querySelector(".clear");
 
 document.addEventListener("DOMContentLoaded", function() {
     loadItems();
+
+    displayAlert();
 
     shoppingForm.addEventListener("submit", handleFormSubmit);
 
     for(let button of filterButtons) {
         button.addEventListener("click", handleFilterSelection);
     }
+
+    clearBtn.addEventListener("click", clear);
 });
+
+function clear() {
+    shoppingList.innerHTML = "";
+    localStorage.clear("shoppingItems");
+
+    updateState();
+}
+
+function updateState() {
+    const isEmpty = shoppingList.querySelectorAll("li").length === 0;
+
+    const alert = document.querySelector(".alert");
+
+    const filterBtns = document.querySelector(".filter-buttons");
+
+    alert.classList.toggle("d-none", !isEmpty);
+    clearBtn.classList.toggle("d-none", isEmpty);
+    filterBtns.classList.toggle("d-none", isEmpty);
+}
 
 function saveToLS() {
     const listItems = shoppingList.querySelectorAll("li");
@@ -52,6 +76,8 @@ function addItem(input) {
     updateFilteredItems();
 
     saveToLS();
+
+    updateState();
 }
 
 function generateId() {
@@ -119,6 +145,8 @@ function removeItem(e) {
     shoppingList.removeChild(li);
 
     saveToLS();
+
+    updateState();
 }
 
 function openEditMode(e) {
