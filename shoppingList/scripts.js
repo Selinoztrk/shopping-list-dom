@@ -12,13 +12,23 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
+function saveToLS() {
+    const listItems = shoppingList.querySelectorAll("li");
+    const list = [];
+
+    for(let li of listItems) {
+        const id = li.getAttribute("item-id");
+        const name = li.querySelector(".item-name").textContent;
+        const completed = li.hasAttribute("item-completed");
+
+        list.push({ id, name, completed });
+    }
+
+    localStorage.setItem("shoppingItems", JSON.stringify(list));
+}
+
 function loadItems() {
-    const items = [
-        {id:1, name: "Egg", completed: false },
-        {id:2, name: "Fish", completed: true },
-        {id:3, name: "Milk", completed: false },
-        {id:4, name: "Shampoo", completed: false }
-    ];
+    const items = JSON.parse(localStorage.getItem("shoppingItems")) || [];
 
     shoppingList.innerHTML = "";
 
@@ -40,6 +50,8 @@ function addItem(input) {
     input.value = "";
 
     updateFilteredItems();
+
+    saveToLS();
 }
 
 function generateId() {
@@ -64,6 +76,8 @@ function toggleCompleted(e) {
     li.toggleAttribute("item-completed", e.target.checked);
 
     updateFilteredItems();
+
+    saveToLS();
 }
 
 function createListItem(item) {
@@ -89,6 +103,7 @@ function createListItem(item) {
 
     // li
     const li = document.createElement("li");
+    li.setAttribute("item-id", item.id);
     li.className = "border rounded p-2 mb-1";
     li.toggleAttribute("item-completed", item.completed);
 
@@ -102,6 +117,8 @@ function createListItem(item) {
 function removeItem(e) {
     const li = e.target.parentElement;
     shoppingList.removeChild(li);
+
+    saveToLS();
 }
 
 function openEditMode(e) {
@@ -113,6 +130,8 @@ function openEditMode(e) {
 
 function closeEditMode(e) {
     e.target.contentEditable = false;
+
+    saveToLS();
 }
 
 function cancelEnter(e) {
