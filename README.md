@@ -47,7 +47,7 @@ A modern shopping list application built with **JavaScript**, **HTML**, and **CS
 ---
 
 ## 📸 Preview
-![Screenshot](screenshot.png)
+![Screenshot](shoppingList/screenshot.png)
 
 ---
 
