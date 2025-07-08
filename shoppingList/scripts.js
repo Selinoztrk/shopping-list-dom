@@ -6,7 +6,7 @@ const clearBtn = document.querySelector(".clear");
 document.addEventListener("DOMContentLoaded", function() {
     loadItems();
 
-    displayAlert();
+    updateState();
 
     shoppingForm.addEventListener("submit", handleFormSubmit);
 
